@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                         .authenticated()
                 )
                 .formLogin(withDefaults());
-        return null;
+        return http.build();
     }
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());

@@ -1,4 +1,4 @@
-package org.example.uzgotuje.services;
+package org.example.uzgotuje.services.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,8 +10,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
-    private final String firstName;
-    private final String lastName;
+    private final String username;
     private final String email;
     private final String password;
+    private final String repeatPassword;
 }
