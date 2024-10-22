@@ -1,4 +1,4 @@
-package org.example.uzgotuje.services.registration;
+package org.example.uzgotuje.services.authorization;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

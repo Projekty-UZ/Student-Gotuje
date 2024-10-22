@@ -2,6 +2,7 @@ package org.example.uzgotuje.services.token;
 
 import lombok.AllArgsConstructor;
 import org.example.uzgotuje.database.entity.ConfirmationToken;
+import org.example.uzgotuje.database.entity.User;
 import org.example.uzgotuje.database.repository.ConfirmationTokenRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ public class ConfirmationTokenService {
 
     public void saveConfirmationToken(ConfirmationToken token) {
         confirmationTokenRepository.save(token);
+    }
+
+    public void deleteConfirmationTokenByUser(User user) {
+        confirmationTokenRepository.deleteByUser(user);
     }
 
 }
