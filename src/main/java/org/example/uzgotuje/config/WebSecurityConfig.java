@@ -24,7 +24,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf->csrf.disable())
                 .authorizeRequests(authorizeRequests->authorizeRequests
-                        .requestMatchers("/auth/**")
+                        .requestMatchers("/auth/**","/recipe/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

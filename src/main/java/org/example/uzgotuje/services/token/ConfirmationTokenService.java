@@ -1,13 +1,10 @@
 package org.example.uzgotuje.services.token;
 
 import lombok.AllArgsConstructor;
-import org.example.uzgotuje.database.entity.ConfirmationToken;
-import org.example.uzgotuje.database.entity.User;
-import org.example.uzgotuje.database.repository.ConfirmationTokenRepository;
+import org.example.uzgotuje.database.entity.auth.ConfirmationToken;
+import org.example.uzgotuje.database.entity.auth.User;
+import org.example.uzgotuje.database.repository.auth.ConfirmationTokenRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
