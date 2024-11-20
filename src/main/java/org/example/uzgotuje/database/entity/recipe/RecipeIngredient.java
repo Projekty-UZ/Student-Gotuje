@@ -1,6 +1,9 @@
 package org.example.uzgotuje.database.entity.recipe;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +18,7 @@ public class RecipeIngredient {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference(value = "recipe-ingredient")
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 

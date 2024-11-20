@@ -1,31 +1,33 @@
 package org.example.uzgotuje.database.entity.recipe;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.uzgotuje.database.entity.auth.User;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Image {
+public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imagePath; // Path where the image is stored on the server
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JsonBackReference(value = "recipe-image")
     @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe;
+    private Recipe recipe; // Many-to-One relationship with Recipe
 
-    public Image(String imagePath) {
-        this.imagePath = imagePath;
+    public Favorite(User user, Recipe recipe) {
+        this.user = user;
+        this.recipe = recipe;
     }
 }

@@ -1,6 +1,7 @@
 package org.example.uzgotuje.database.entity.recipe;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
+    @JsonBackReference
     private Set<Recipe> recipes;
 
     public Tag(String tagType, String name) {
