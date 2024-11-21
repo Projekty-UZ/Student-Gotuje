@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.example.uzgotuje.database.entity.recipe.*;
 import org.example.uzgotuje.services.recipe.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -164,7 +167,24 @@ public class RecipeController {
     public ResponseEntity<List<Recipe>> getRecipesBySearch(@RequestBody RecipeSearchRequest request) {
         RecipeTypes type = null;
         if(request.getType() != null) {
-            type = RecipeTypes.valueOf(request.getType());
+            try {
+                type = RecipeTypes.valueOf(request.getType());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Collections.emptyList());
+            }
+        }
+        if(request.getTags() != null) {
+            for (Tag tag : request.getTags()) {
+                try{
+                    TagTypes.valueOf(tag.getTagType().toString());
+                } catch (IllegalArgumentException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(Collections.emptyList());
+                }
+            }
+        }else{
+            request.setTags(new Tag[0]);
         }
         List<Recipe> response = recipeService.searchRecipes(Arrays.asList(request.getTags()), request.getName(), type, request.isSortByRatingDesc());
 
