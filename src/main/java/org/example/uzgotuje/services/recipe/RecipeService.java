@@ -26,6 +26,7 @@ public class RecipeService {
     private final FavoriteRepository favoriteRepository;
     private final AuthenticationService authenticationService;
     private final FileStorageService fileStorageService;
+    private final CommentRepository commentRepository;
 
     public String createIngredient(CreateIngredientRequest request, String cookieValue) {
         if(cookieValue == null) {
@@ -254,5 +255,31 @@ public class RecipeService {
 
     public List<Ingredient> getIngredients() {
         return ingredientRepository.findAll();
+    }
+
+    public String createComment(Long recipeId, String content, String cookieValue) {
+        if(cookieValue == null) {
+            return "Unauthorized";
+        }
+        User user = authenticationService.validateCookieAndGetUser(cookieValue);
+        if(user == null) {
+            return "Unauthorized";
+        }
+        Optional<Recipe> recipe = recipeRepository.findById(recipeId);
+        if(recipe.isEmpty() || content == null || content.isEmpty()) {
+            return "Bad request";
+        }
+        Comment comment = new Comment(content,user.getUsername());
+        comment.setRecipe(recipe.get());
+        commentRepository.save(comment);
+        return "Success";
+    }
+
+    public List<Comment> getCommentsOfRecipe(Long recipeId) {
+        Optional<Recipe> recipe = recipeRepository.findById(recipeId);
+        if(recipe.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return commentRepository.findByRecipe(recipe.get()).orElse(new ArrayList<>());
     }
 }

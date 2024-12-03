@@ -227,4 +227,28 @@ public class RecipeController {
         }
     }
 
+    @GetMapping(path = "/get/commentsOfRecipe")
+    public ResponseEntity<List<Comment>> getCommentsOfRecipe(@RequestParam("recipeId") Long recipeId) {
+        List<Comment> response = recipeService.getCommentsOfRecipe(recipeId);
+
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body(null);
+        }
+    }
+
+    @PostMapping(path = "/create/comment")
+    public ResponseEntity<String> createComment(@RequestBody CreateCommentRequest request, @CookieValue(value = "SESSION_ID", required = false) String cookieValue) {
+        String response = recipeService.createComment(request.getRecipeId(),request.getContent(), cookieValue);
+
+        if ("Success".equals(response)) {
+            return ResponseEntity.ok("Comment created");
+        } else if ("Unauthorized".equals(response)) {
+            return ResponseEntity.status(401).body(response);
+        }
+        else {
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }

@@ -45,6 +45,10 @@ public class Recipe {
     @JsonIgnore
     private Set<Rating> ratings = new HashSet<>();
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "recipe-comment")
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToMany
     @JoinTable(
             name = "recipe_tag",
