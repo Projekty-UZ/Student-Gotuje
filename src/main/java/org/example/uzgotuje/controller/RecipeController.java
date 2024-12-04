@@ -11,9 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.ParseException;
+
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -86,7 +85,7 @@ public class RecipeController {
     private List<Tag> parseTags(String json) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(json, new TypeReference<List<Tag>>(){});
+            return objectMapper.readValue(json, new TypeReference<>(){});
         } catch (Exception e) {
             throw new RuntimeException("Error parsing tags JSON", e);
         }
@@ -95,7 +94,7 @@ public class RecipeController {
     private List<RecipeIngredient> parseIngredients(String json) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(json, new TypeReference<List<RecipeIngredient>>(){});
+            return objectMapper.readValue(json, new TypeReference<>(){});
         } catch (Exception e) {
             throw new RuntimeException("Error parsing ingredients JSON", e);
         }
@@ -249,6 +248,17 @@ public class RecipeController {
         }
         else {
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping(path = "/get/randomRecipes")
+    public ResponseEntity<List<Recipe>> getRandomRecipes(@RequestParam("type") String type) {
+        List<Recipe> response = recipeService.getRandomRecipesByType(type);
+
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body(null);
         }
     }
 }

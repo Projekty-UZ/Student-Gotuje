@@ -155,7 +155,7 @@ public class RecipeService {
         // Check if each file is a valid image and under 1MB
         for (MultipartFile file : request.getImages()) {
             // Validate file size (<= 1MB)
-            if (file.getSize() > 1 * 1024 * 1024) { // 1MB = 1024 * 1024 bytes
+            if (file.getSize() > 1024 * 1024) { // 1MB = 1024 * 1024 bytes
                 return false;
             }
 
@@ -281,5 +281,15 @@ public class RecipeService {
             return new ArrayList<>();
         }
         return commentRepository.findByRecipe(recipe.get()).orElse(new ArrayList<>());
+    }
+
+    public List<Recipe> getRandomRecipesByType(String type) {
+        if(type == null || type.isEmpty()) {
+            return new ArrayList<>();
+        }
+        if(Arrays.stream(RecipeTypes.values()).noneMatch(recipeType -> recipeType.name().equals(type))) {
+            return new ArrayList<>();
+        }
+        return recipeRepository.findRandomRecipesByType(type);
     }
 }
