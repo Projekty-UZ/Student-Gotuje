@@ -18,9 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 public class RecipeService {
     private final RecipeRepository recipeRepository;
-    private final ImageRepository imageRepository;
     private final TagRepository tagRepository;
-    private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
     private final RatingRepository ratingRepository;
     private final FavoriteRepository favoriteRepository;
