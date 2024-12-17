@@ -1,5 +1,6 @@
 package org.example.uzgotuje.database.entity.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class User implements UserDetails {
     private Long id;
     private String username;
     private String email;
+    @JsonIgnore
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRoles appUserRole;

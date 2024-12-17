@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/recipe")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class RecipeController {
     private final RecipeService recipeService;
 
@@ -112,6 +113,17 @@ public class RecipeController {
         }
         else {
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping(path = "/get/userRating")
+    public ResponseEntity<Integer> getUserRating(@RequestParam("recipeId") Long recipeId, @CookieValue(value = "SESSION_ID", required = false) String cookieValue) {
+        Integer response = recipeService.getUserRating(recipeId, cookieValue);
+
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body(null);
         }
     }
 

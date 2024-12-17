@@ -212,6 +212,22 @@ public class RecipeService {
         return "Success";
     }
 
+    public Integer getUserRating(Long recipeId, String cookieValue) {
+        if(cookieValue == null) {
+            return 0;
+        }
+        Optional<Recipe> recipe = recipeRepository.findById(recipeId);
+        if(recipe.isEmpty()) {
+            return 0;
+        }
+        User user = authenticationService.validateCookieAndGetUser(cookieValue);
+        Rating dbRating = ratingRepository.findByUserAndRecipe(user, recipe.get()).orElse(null);
+        if(dbRating == null) {
+            return 0;
+        }
+        return dbRating.getScore();
+    }
+
     //update the value of favorite if it exists it deletes it, if it doesn't it creates it
     public String updateFavorite(Long recipeId, String cookieValue) {
         if(cookieValue == null) {
