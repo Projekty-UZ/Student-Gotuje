@@ -1,6 +1,8 @@
+import "./LoginForm.css";
+
 function LoginFrom() {
   const loginForm = "LoginForm";
 
-  return loginForm;
+  return <div>loginForm</div>;
 }
 export default LoginFrom;
