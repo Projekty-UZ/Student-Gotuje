@@ -1,6 +1,10 @@
-import ListGroup from "./components/ListGroup";
+import LoginFrom from "./components/LoginForm/LoginForm";
 
 function App() {
-  return <div><ListGroup/></div>;
+  return (
+    <div>
+      <LoginFrom />
+    </div>
+  );
 }
 export default App;
