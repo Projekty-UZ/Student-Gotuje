@@ -3,6 +3,7 @@ package org.example.uzgotuje.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.example.uzgotuje.database.entity.auth.User;
 import org.example.uzgotuje.services.authorization.*;
 import org.example.uzgotuje.services.token.TokenResponse;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping(path = "/auth")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
@@ -109,4 +111,15 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token not found");
         }
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<User> getUsername(@CookieValue(value = "SESSION_ID", required = false) String cookieValue) {
+        User user = authenticationService.validateCookieAndGetUser(cookieValue);
+        if (cookieValue != null && user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
 }

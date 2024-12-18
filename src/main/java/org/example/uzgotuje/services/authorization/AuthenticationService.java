@@ -2,12 +2,12 @@ package org.example.uzgotuje.services.authorization;
 
 import lombok.AllArgsConstructor;
 import org.example.uzgotuje.config.PasswordEncoderConfig;
-import org.example.uzgotuje.database.entity.ConfirmationToken;
-import org.example.uzgotuje.database.entity.SessionCookie;
-import org.example.uzgotuje.database.entity.User;
-import org.example.uzgotuje.database.entity.UserRoles;
-import org.example.uzgotuje.database.repository.ConfirmationTokenRepository;
-import org.example.uzgotuje.database.repository.SessionCookieRepository;
+import org.example.uzgotuje.database.entity.auth.ConfirmationToken;
+import org.example.uzgotuje.database.entity.auth.SessionCookie;
+import org.example.uzgotuje.database.entity.auth.User;
+import org.example.uzgotuje.database.entity.auth.UserRoles;
+import org.example.uzgotuje.database.repository.auth.ConfirmationTokenRepository;
+import org.example.uzgotuje.database.repository.auth.SessionCookieRepository;
 import org.example.uzgotuje.services.UserService;
 import org.example.uzgotuje.services.email.EmailValidator;
 import org.example.uzgotuje.services.token.ConfirmationTokenService;
@@ -91,7 +91,6 @@ public class AuthenticationService {
 
         if (userOpt.isPresent() && passwordEncoderConfig.passwordEncoder().matches(password, userOpt.get().getPassword())) {
             // Create cookie
-            System.out.println(userOpt.get().getPassword()+" "+passwordEncoderConfig.passwordEncoder().encode(password));
             String cookieValue = UUID.randomUUID().toString();
             LocalDateTime expiryDate = LocalDateTime.now().plusHours(2); // Set expiry for 2 hours
 
@@ -119,6 +118,20 @@ public class AuthenticationService {
         }
 
         return false;
+    }
+
+    public User validateCookieAndGetUser(String cookieValue) {
+        Optional<SessionCookie> userCookieOpt = sessionCookieRepository.findByCookieValue(cookieValue);
+
+        if (userCookieOpt.isPresent()) {
+            SessionCookie userCookie = userCookieOpt.get();
+            // Check if the cookie hasn't expired
+            if (userCookie.getExpiryDate().isAfter(LocalDateTime.now())) {
+                return userCookie.getUser();
+            }
+        }
+
+        return null;
     }
 
     public void logout(String cookieValue) {

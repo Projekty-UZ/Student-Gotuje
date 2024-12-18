@@ -2,9 +2,9 @@ package org.example.uzgotuje.services;
 
 import lombok.AllArgsConstructor;
 import org.example.uzgotuje.config.PasswordEncoderConfig;
-import org.example.uzgotuje.database.entity.ConfirmationToken;
-import org.example.uzgotuje.database.entity.User;
-import org.example.uzgotuje.database.repository.UserRepository;
+import org.example.uzgotuje.database.entity.auth.ConfirmationToken;
+import org.example.uzgotuje.database.entity.auth.User;
+import org.example.uzgotuje.database.repository.auth.UserRepository;
 import org.example.uzgotuje.services.authorization.RegistrationResponse;
 import org.example.uzgotuje.services.token.ConfirmationTokenService;
 import org.springframework.security.core.userdetails.UserDetails;
