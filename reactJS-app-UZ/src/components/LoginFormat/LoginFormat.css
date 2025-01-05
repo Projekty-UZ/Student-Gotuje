@@ -1,12 +1,14 @@
 .container {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    margin-top: 150px;
-    background: white;
-    padding-left: 40px;
-    padding-right: 40px;
+    background: rgb(223, 193, 193);
+    width: 100px;
+    padding-left: 60px;
+    padding-right: 60px;
     padding-bottom: 60px;
+    height: 200px;
+    width: 200px;
+    
 }
 .header {
     display: flex;
@@ -15,4 +17,15 @@
     gap: 9px;
     width: 100%;
     margin-top: 30px;
+}
+input{
+    margin-top: 0px;
+    display: flex;
+}
+p{
+    margin: 0px;
+}
+.forget-password-button {
+    margin-top: 10px;
+    align-items: center;
 }

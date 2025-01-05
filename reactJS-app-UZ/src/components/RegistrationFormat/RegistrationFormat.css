@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    background: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 150px;
+    
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 30px;
+}
+input{
+    margin-top: 0px;
+}
