@@ -1,5 +1,5 @@
 import React from "react";
-import './LoginFormat.css'
+import './LoginFormat.css';
 const LoginFormat = () => {
 
     const handleClick = () =>{
@@ -26,12 +26,11 @@ const LoginFormat = () => {
             
             <div className="forget-password">
                 <p>Zapomniałeś hasła?<a href="/rejestracja">Kliknij tutaj</a> </p>
-                
-                </div>
-            <div className="submit-container">
-                <div className="submit">Zaloguj</div>
-                <div className="submit">Zarejestruj</div>
             </div>
+            <div className="create-account">
+                <p><a href="/rejestracja">Utwórz nowe konto</a></p>
+            </div>
+            
         </div>
         
     )
