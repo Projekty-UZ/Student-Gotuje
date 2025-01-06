@@ -25,7 +25,7 @@ const LoginFormat = () => {
             </div>
             
             <div className="forget-password">
-                <p>Zapomniałeś hasła?<a href="/rejestracja">Kliknij tutaj</a> </p>
+                <p>Zapomniałeś hasła?<br/><a href="/rejestracja">Kliknij tutaj<br/></a> </p>
             </div>
             <div className="create-account">
                 <p><a href="/rejestracja">Utwórz nowe konto</a></p>
