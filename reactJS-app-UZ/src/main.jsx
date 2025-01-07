@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import LoginFormat from './components/LoginFormat/LoginFormat.jsx'
 import RegistrationFormat from './components/RegistrationFormat/RegistrationFormat.jsx'
+import RecipeOfTheDay from './components/RecipeOfTheDay/RecipeOfTheDay.jsx'
 
 import App from './App.jsx'
 import {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "rejestracja",
     element: <RegistrationFormat/>
+  },
+  {
+    path: "przepis-dnia",
+    element: <RecipeOfTheDay/>
   }
 ]);
 

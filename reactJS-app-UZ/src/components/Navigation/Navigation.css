@@ -22,6 +22,18 @@
     text-decoration: none;
     font-size: 1rem;
   }
-  
+  p {
+    text-align: center;
+  }
+  .account li a{
+    margin-left: 400px;
+    color: white;
+    text-decoration: none;
+    float: left;
+    font-size: 1rem;
+    display: flex;
+    justify-content: left;
+    
+  }
 
   
