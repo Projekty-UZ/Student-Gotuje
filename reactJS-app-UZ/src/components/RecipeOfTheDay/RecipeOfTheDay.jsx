@@ -11,9 +11,7 @@ const RecipeOfTheDay = () => {
             <div className="containter">
                 <p className="welcome-text">Przepisy dnia</p>
                 
-                <div className="asdf">
-                    <p>1</p>
-                </div>
+                
                
                 
 

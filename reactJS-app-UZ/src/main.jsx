@@ -4,6 +4,8 @@ import './index.css'
 import LoginFormat from './components/LoginFormat/LoginFormat.jsx'
 import RegistrationFormat from './components/RegistrationFormat/RegistrationFormat.jsx'
 import RecipeOfTheDay from './components/RecipeOfTheDay/RecipeOfTheDay.jsx'
+import Recipes from './components/Recipes/Recipes.jsx'
+import Contact from './components/Contact/Contact.jsx'
 
 import App from './App.jsx'
 import {
@@ -11,6 +13,7 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +31,14 @@ const router = createBrowserRouter([
   {
     path: "przepis-dnia",
     element: <RecipeOfTheDay/>
+  },
+  {
+    path: "przepisy",
+    element: <Recipes/>
+  },
+  {
+    path: "kontakt",
+    element: <Contact/>
   }
 ]);
 
