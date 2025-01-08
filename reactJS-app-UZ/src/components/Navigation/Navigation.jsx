@@ -12,7 +12,7 @@ const Navigation = () => {
           <li><a href="/kontakt">Kontakt</a></li>
         </ul>
         <u1 className="account">
-            <li><a href="/account">Twoje konto</a></li>
+            <li><a href="/twoje-konto">Twoje konto</a></li>
         </u1>
       </nav>
     );
