@@ -1,18 +1,18 @@
 import React from "react";
-import './Recipes.css'
+import './RecipesPage.css'
 import Navigation from "../Navigation/Navigation";
 
-const Recipes = () => {
+const RecipesPage = () => {
     return (
         <div>
             <div className="navigation">
             <Navigation/>
             </div>
             <div className="containter">
-                <p className="recipes-text">wszystkie przepisy</p>
+                <a href="/przepis"><button className="recipes-button">Przepis na naleśniki</button></a>
             </div>
         </div>
 
     )
 }
-export default Recipes;
+export default RecipesPage;

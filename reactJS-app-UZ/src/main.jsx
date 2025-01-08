@@ -4,8 +4,9 @@ import './index.css'
 import LoginFormat from './components/LoginFormat/LoginFormat.jsx'
 import RegistrationFormat from './components/RegistrationFormat/RegistrationFormat.jsx'
 import RecipeOfTheDay from './components/RecipeOfTheDay/RecipeOfTheDay.jsx'
-import Recipes from './components/Recipes/Recipes.jsx'
+import RecipesPage from './components/RecipesPage/RecipesPage.jsx'
 import Contact from './components/Contact/Contact.jsx'
+import SingleRecipe from './components/SingleRecipe/SingleRecipe.jsx'
 
 import App from './App.jsx'
 import {
@@ -34,11 +35,15 @@ const router = createBrowserRouter([
   },
   {
     path: "przepisy",
-    element: <Recipes/>
+    element: <RecipesPage/>
   },
   {
     path: "kontakt",
     element: <Contact/>
+  },
+  {
+    path: "przepis",
+    element: <SingleRecipe/>
   }
 ]);
 
