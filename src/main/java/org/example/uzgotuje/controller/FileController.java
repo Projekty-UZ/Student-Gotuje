@@ -25,7 +25,6 @@ public class FileController {
             SmbFile smbFile = new SmbFile(filePath);
 
             if (smbFile.exists() && smbFile.isFile()) {
-                System.out.println("File exists: " + smbFile.getName());
                 InputStream inputStream = new SmbFileInputStream(smbFile);
                 Resource resource = new InputStreamResource(inputStream);
 

@@ -19,6 +19,7 @@ import java.util.Objects;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final RecaptchaService recaptchaService;
 
     @PostMapping(path = "/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) {
@@ -27,6 +28,17 @@ public class AuthenticationController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/verifyCaptcha")
+    public ResponseEntity<String> verifyCaptcha(@RequestParam String token) {
+        boolean isValid = recaptchaService.verifyRecaptcha(token);
+
+        if (isValid) {
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failure", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -91,9 +103,6 @@ public class AuthenticationController {
     @PostMapping("/resetPasswordEmail")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordEmailRequest email) {
         String response = authenticationService.resetPasswordEmail(email.getEmail());
-        if("Passwords do not match".equals(response)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
-        }
         if ("Success".equals(response)) {
             return ResponseEntity.ok("Password reset email sent");
         } else {
@@ -105,6 +114,9 @@ public class AuthenticationController {
     public ResponseEntity<String> resetPassword(@RequestParam("token") String token, @RequestBody ResetPasswordRequest passwordRequest) {
 
         String response = authenticationService.resetPassword(token, passwordRequest.getPassword(), passwordRequest.getRepeatPassword());
+        if("Passwords do not match".equals(response)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
+        }
         if ("Success".equals(response)) {
             return ResponseEntity.ok("Password reset successfully");
         } else {

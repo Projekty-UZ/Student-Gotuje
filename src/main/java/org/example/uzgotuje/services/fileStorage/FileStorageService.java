@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 public class FileStorageService {
-    private final String networkUploadDir = "\\\\192.168.1.1\\shared\\";
+    private final String localUploadDir = "/ssd/sambashare/";
 
     public String saveFile(MultipartFile file) {
         try {
@@ -19,13 +19,13 @@ public class FileStorageService {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             // Construct the path on the remote device
-            Path networkPath = Paths.get(networkUploadDir + fileName);
+            Path localPath = Paths.get(localUploadDir + fileName);
 
-            // Save file to the network directory
-            Files.copy(file.getInputStream(), networkPath);
+            // Save file to the local directory
+            Files.copy(file.getInputStream(), localPath);
 
             // Return the relative path of the file (e.g., "\\192.168.1.1\shared_folder\filename.jpg")
-            return networkPath.toString();
+            return fileName;
         }
         catch (IOException e) {
             return "Failed to save file";
@@ -34,9 +34,9 @@ public class FileStorageService {
 
     public void deleteFile(String path) throws IOException {
         // Construct the path on the remote device
-        Path networkPath = Paths.get(path);
+        Path localPath = Paths.get(path);
 
-        // Delete the file from the network directory
-        Files.delete(networkPath);
+        // Delete the file from the local directory
+        Files.delete(localPath);
     }
 }

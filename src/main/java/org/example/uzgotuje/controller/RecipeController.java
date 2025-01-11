@@ -174,7 +174,7 @@ public class RecipeController {
         }
     }
 
-    @GetMapping(path = "/get/recipeSearch")
+    @PostMapping(path = "/get/recipeSearch")
     public ResponseEntity<List<Recipe>> getRecipesBySearch(@RequestBody RecipeSearchRequest request) {
         RecipeTypes type = null;
         if(request.getType() != null) {
