@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
+/**
+ * REST controller for handling authentication-related requests.
+ */
 @RestController
 @RequestMapping(path = "/auth")
 @AllArgsConstructor
@@ -21,6 +24,12 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final RecaptchaService recaptchaService;
 
+    /**
+     * Registers a new user.
+     *
+     * @param request the registration request containing user details
+     * @return a response entity with the registration response and HTTP status
+     */
     @PostMapping(path = "/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) {
         RegistrationResponse response = authenticationService.register(request);
@@ -31,6 +40,12 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Verifies the reCAPTCHA token.
+     *
+     * @param token the reCAPTCHA token to verify
+     * @return a response entity with the verification result and HTTP status
+     */
     @PostMapping("/verifyCaptcha")
     public ResponseEntity<String> verifyCaptcha(@RequestParam String token) {
         boolean isValid = recaptchaService.verifyRecaptcha(token);
@@ -42,6 +57,12 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Confirms the email verification token.
+     *
+     * @param token the email verification token
+     * @return a response entity with the token response and HTTP status
+     */
     @GetMapping(path = "/confirm")
     public ResponseEntity<TokenResponse> confirm(@RequestParam("token") String token) {
         TokenResponse response = authenticationService.confirmToken(token);
@@ -52,7 +73,13 @@ public class AuthenticationController {
         }
     }
 
-    // Logging User and creating cookie on user side and cookie in database
+    /**
+     * Logs in the user and creates a session cookie.
+     *
+     * @param loginRequest the login request containing user credentials
+     * @param response the HTTP servlet response to add the cookie to
+     * @return a response entity with the login result and HTTP status
+     */
     @PostMapping(path = "/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
             String cookieValue = authenticationService.login(loginRequest.getEmail(), loginRequest.getPassword());
@@ -72,7 +99,12 @@ public class AuthenticationController {
             return ResponseEntity.ok("Login successful");
     }
 
-    // Checking if cookie is valid
+    /**
+     * Checks if the session cookie is valid.
+     *
+     * @param cookieValue the session cookie value
+     * @return a response entity with the validation result and HTTP status
+     */
     @GetMapping("/check")
     public ResponseEntity<String> checkCookie(@CookieValue(value = "SESSION_ID", required = false) String cookieValue) {
         if (cookieValue != null && authenticationService.validateCookie(cookieValue)) {
@@ -82,7 +114,13 @@ public class AuthenticationController {
         }
     }
 
-    // Logging out user and deleting cookie from database
+    /**
+     * Logs out the user and deletes the session cookie.
+     *
+     * @param cookieValue the session cookie value
+     * @param response the HTTP servlet response to remove the cookie from
+     * @return a response entity with the logout result and HTTP status
+     */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue(value = "SESSION_ID", required = false) String cookieValue, HttpServletResponse response) {
         if (cookieValue != null) {
@@ -100,6 +138,12 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Sends a password reset email.
+     *
+     * @param email the email request containing the user's email address
+     * @return a response entity with the result and HTTP status
+     */
     @PostMapping("/resetPasswordEmail")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordEmailRequest email) {
         String response = authenticationService.resetPasswordEmail(email.getEmail());
@@ -110,6 +154,13 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Resets the user's password.
+     *
+     * @param token the password reset token
+     * @param passwordRequest the password reset request containing the new password
+     * @return a response entity with the result and HTTP status
+     */
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(@RequestParam("token") String token, @RequestBody ResetPasswordRequest passwordRequest) {
 
@@ -124,6 +175,12 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Retrieves the authenticated user's details.
+     *
+     * @param cookieValue the session cookie value
+     * @return a response entity with the user details and HTTP status
+     */
     @GetMapping("/user")
     public ResponseEntity<User> getUsername(@CookieValue(value = "SESSION_ID", required = false) String cookieValue) {
         User user = authenticationService.validateCookieAndGetUser(cookieValue);

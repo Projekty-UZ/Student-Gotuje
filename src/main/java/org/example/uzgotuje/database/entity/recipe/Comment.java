@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity representing a comment on a recipe.
+ */
 @Entity
 @Getter
 @Setter
@@ -25,6 +28,12 @@ public class Comment {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
+    /**
+     * Constructs a new Comment with the specified content and username.
+     *
+     * @param content the content of the comment
+     * @param username the username of the commenter
+     */
     public Comment(String content, String username) {
         this.content = content;
         this.username = username;

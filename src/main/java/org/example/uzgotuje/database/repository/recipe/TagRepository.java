@@ -5,8 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing Tag entities.
+ */
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    //find tag by name
-    Optional<Tag> findByName(String name);
 
+    /**
+     * Finds a Tag by its name.
+     *
+     * @param name the name of the Tag
+     * @return an Optional containing the found Tag, or empty if not found
+     */
+    Optional<Tag> findByName(String name);
 }

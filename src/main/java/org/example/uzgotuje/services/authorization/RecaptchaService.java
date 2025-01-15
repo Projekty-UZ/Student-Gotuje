@@ -15,10 +15,21 @@ public class RecaptchaService {
 
     private final RestTemplate restTemplate;
 
+    /**
+     * Constructs a new RecaptchaService with the given RestTemplate.
+     *
+     * @param restTemplate the RestTemplate to be used for making HTTP requests
+     */
     public RecaptchaService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Verifies the reCAPTCHA response with Google's reCAPTCHA API.
+     *
+     * @param recaptchaResponse the reCAPTCHA response token provided by the client
+     * @return true if the reCAPTCHA response is valid, otherwise false
+     */
     public boolean verifyRecaptcha(String recaptchaResponse) {
         // Prepare request body
         String url = RECAPTCHA_VERIFY_URL + "?secret=" + recaptchaSecretKey + "&response=" + recaptchaResponse;

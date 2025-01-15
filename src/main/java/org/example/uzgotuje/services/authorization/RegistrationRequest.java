@@ -10,8 +10,23 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
+    /**
+     * The username of the user registering.
+     */
     private final String username;
+
+    /**
+     * The email of the user registering.
+     */
     private final String email;
+
+    /**
+     * The password of the user registering.
+     */
     private final String password;
+
+    /**
+     * The repeated password for confirmation.
+     */
     private final String repeatPassword;
 }

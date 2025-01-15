@@ -10,6 +10,13 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class CreateCommentRequest {
+    /**
+     * The ID of the recipe to which the comment belongs.
+     */
     private final Long recipeId;
+
+    /**
+     * The content of the comment.
+     */
     private final String content;
 }

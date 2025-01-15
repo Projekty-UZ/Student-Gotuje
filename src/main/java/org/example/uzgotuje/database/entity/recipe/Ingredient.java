@@ -12,6 +12,9 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/**
+ * Entity representing an ingredient in a recipe.
+ */
 @Entity
 @Getter
 @Setter
@@ -28,6 +31,11 @@ public class Ingredient {
     @JsonIgnore
     private Set<RecipeIngredient> recipes;
 
+    /**
+     * Constructs a new Ingredient with the specified name.
+     *
+     * @param name the name of the ingredient
+     */
     public Ingredient(String name) {
         this.name = name;
     }

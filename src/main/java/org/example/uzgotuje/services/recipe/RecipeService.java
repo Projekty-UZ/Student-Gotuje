@@ -14,18 +14,59 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+/**
+ * Service class for managing recipes.
+ */
 @Service
 @AllArgsConstructor
 public class RecipeService {
+    /**
+     * Repository for managing recipes.
+     */
     private final RecipeRepository recipeRepository;
+
+    /**
+     * Repository for managing tags.
+     */
     private final TagRepository tagRepository;
+
+    /**
+     * Repository for managing ingredients.
+     */
     private final IngredientRepository ingredientRepository;
+
+    /**
+     * Repository for managing ratings.
+     */
     private final RatingRepository ratingRepository;
+
+    /**
+     * Repository for managing favorites.
+     */
     private final FavoriteRepository favoriteRepository;
+
+    /**
+     * Service for managing authentication.
+     */
     private final AuthenticationService authenticationService;
+
+    /**
+     * Service for managing file storage.
+     */
     private final FileStorageService fileStorageService;
+
+    /**
+     * Repository for managing comments.
+     */
     private final CommentRepository commentRepository;
 
+    /**
+     * Creates a new ingredient.
+     *
+     * @param request the request object containing ingredient details
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String createIngredient(CreateIngredientRequest request, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -43,6 +84,13 @@ public class RecipeService {
         return "Success";
     }
 
+    /**
+     * Creates a new tag.
+     *
+     * @param request the request object containing tag details
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String createTag(CreateTagRequest request, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -60,6 +108,12 @@ public class RecipeService {
         return "Success";
     }
 
+    /**
+     * Checks the validity of a tag request.
+     *
+     * @param request the request object containing tag details
+     * @return true if the request is valid, false otherwise
+     */
     private boolean checkTagRequestValidity(CreateTagRequest request) {
         if(request.getName() == null || request.getName().isEmpty()) {
             return false;
@@ -73,6 +127,13 @@ public class RecipeService {
         return true;
     }
 
+    /**
+     * Creates a new recipe.
+     *
+     * @param request the request object containing recipe details
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String createRecipe(CreateRecipeRequest request, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -118,14 +179,34 @@ public class RecipeService {
         return "Success";
     }
 
+    /**
+     * Retrieves a recipe by its ID.
+     *
+     * @param recipeId the ID of the recipe
+     * @return the recipe object, or null if not found
+     */
     public Recipe getRecipe(Long recipeId) {
         return recipeRepository.findById(recipeId).orElse(null);
     }
 
+    /**
+     * Retrieves all recipes.
+     *
+     * @return a list of all recipes
+     */
     public List<Recipe> getRecipes() {
         return recipeRepository.findAll();
     }
 
+    /**
+     * Searches for recipes based on tags, name, type, and sort order.
+     *
+     * @param tags the tags to search for
+     * @param name the name to search for
+     * @param type the type of recipes to search for
+     * @param sortByRatingDesc whether to sort by rating in descending order
+     * @return a list of recipes matching the search criteria
+     */
     public List<Recipe> searchRecipes(List<Tag> tags, String name, RecipeTypes type, boolean sortByRatingDesc) {
         Specification<Recipe> spec = Specification.where(RecipeSpecification.hasTags(new HashSet<>(tags)))
                 .and(RecipeSpecification.hasName(name))
@@ -136,8 +217,12 @@ public class RecipeService {
         return recipeRepository.findAll(spec, sort);
     }
 
-
-
+    /**
+     * Checks the validity of a create recipe request.
+     *
+     * @param request the request object containing recipe details
+     * @return true if the request is valid, false otherwise
+     */
     private boolean checkCreateRecipeRequestValidity(CreateRecipeRequest request) {
         if(request.getName() == null || request.getName().isEmpty()) {
             return false;
@@ -187,6 +272,14 @@ public class RecipeService {
         return true;
     }
 
+    /**
+     * Adds a rating to a recipe.
+     *
+     * @param recipeId the ID of the recipe
+     * @param score the score to be given
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String addRating(Long recipeId, Integer score, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -212,6 +305,13 @@ public class RecipeService {
         return "Success";
     }
 
+    /**
+     * Retrieves the rating given by a user to a recipe.
+     *
+     * @param recipeId the ID of the recipe
+     * @param cookieValue the cookie value for authentication
+     * @return the rating score, or 0 if not found
+     */
     public Integer getUserRating(Long recipeId, String cookieValue) {
         if(cookieValue == null) {
             return 0;
@@ -228,7 +328,13 @@ public class RecipeService {
         return dbRating.getScore();
     }
 
-    //update the value of favorite if it exists it deletes it, if it doesn't it creates it
+    /**
+     * Updates the favorite status of a recipe for a user.
+     *
+     * @param recipeId the ID of the recipe
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String updateFavorite(Long recipeId, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -249,7 +355,12 @@ public class RecipeService {
         return "Success";
     }
 
-    //get all favorite recipes of the user
+    /**
+     * Retrieves all favorite recipes of a user.
+     *
+     * @param cookieValue the cookie value for authentication
+     * @return a list of favorite recipes
+     */
     public List<Recipe> getFavoriteRecipes(String cookieValue) {
         if(cookieValue == null) {
             return new ArrayList<>();
@@ -263,14 +374,32 @@ public class RecipeService {
         return recipes;
     }
 
+    /**
+     * Retrieves all tags.
+     *
+     * @return a list of all tags
+     */
     public List<Tag> getTags() {
         return tagRepository.findAll();
     }
 
+    /**
+     * Retrieves all ingredients.
+     *
+     * @return a list of all ingredients
+     */
     public List<Ingredient> getIngredients() {
         return ingredientRepository.findAll();
     }
 
+    /**
+     * Creates a new comment for a recipe.
+     *
+     * @param recipeId the ID of the recipe
+     * @param content the content of the comment
+     * @param cookieValue the cookie value for authentication
+     * @return a string indicating the result of the operation
+     */
     public String createComment(Long recipeId, String content, String cookieValue) {
         if(cookieValue == null) {
             return "Unauthorized";
@@ -289,6 +418,12 @@ public class RecipeService {
         return "Success";
     }
 
+    /**
+     * Retrieves all comments of a recipe.
+     *
+     * @param recipeId the ID of the recipe
+     * @return a list of comments for the recipe
+     */
     public List<Comment> getCommentsOfRecipe(Long recipeId) {
         Optional<Recipe> recipe = recipeRepository.findById(recipeId);
         if(recipe.isEmpty()) {
@@ -297,6 +432,12 @@ public class RecipeService {
         return commentRepository.findByRecipe(recipe.get()).orElse(new ArrayList<>());
     }
 
+    /**
+     * Retrieves random recipes by type.
+     *
+     * @param type the type of recipes to retrieve
+     * @return a list of random recipes of the specified type
+     */
     public List<Recipe> getRandomRecipesByType(String type) {
         if(type == null || type.isEmpty()) {
             return new ArrayList<>();

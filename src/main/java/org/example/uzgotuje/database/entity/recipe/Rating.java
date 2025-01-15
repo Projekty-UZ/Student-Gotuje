@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.uzgotuje.database.entity.auth.User;
 
+/**
+ * Entity representing a rating given by a user to a recipe.
+ */
 @Entity
 @Getter
 @Setter
@@ -29,6 +32,13 @@ public class Rating {
     @Column(nullable = false)
     private int score;
 
+    /**
+     * Constructs a new Rating with the specified user, recipe, and score.
+     *
+     * @param user the user who gave the rating
+     * @param recipe the recipe that is being rated
+     * @param score the score given to the recipe
+     */
     public Rating(User user, Recipe recipe, int score) {
         this.user = user;
         this.recipe = recipe;

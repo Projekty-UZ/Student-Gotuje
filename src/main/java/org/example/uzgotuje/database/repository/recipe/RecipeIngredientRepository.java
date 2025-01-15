@@ -5,9 +5,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing RecipeIngredient entities.
+ */
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Long> {
-    //find all ingredients for recipe
+
+    /**
+     * Finds all ingredients for a given Recipe ID.
+     *
+     * @param recipeId the ID of the Recipe whose ingredients are to be found
+     * @return a list of RecipeIngredients associated with the given Recipe ID
+     */
     List<RecipeIngredient> findByRecipeId(Long recipeId);
-    //find all recipes with ingredient
+
+    /**
+     * Finds all recipes with a given Ingredient ID.
+     *
+     * @param ingredientId the ID of the Ingredient whose recipes are to be found
+     * @return a list of RecipeIngredients associated with the given Ingredient ID
+     */
     List<RecipeIngredient> findByIngredientId(Long ingredientId);
 }

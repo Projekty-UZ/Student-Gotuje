@@ -11,10 +11,18 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ResetPasswordEmailRequest {
+    /**
+     * The email of the user requesting a password reset.
+     */
     private final String email;
+
+    /**
+     * Constructs a new ResetPasswordEmailRequest with the given email.
+     *
+     * @param email the email of the user requesting a password reset
+     */
     @JsonCreator
     public ResetPasswordEmailRequest(@JsonProperty("email") String email) {
         this.email = email;
     }
-
 }

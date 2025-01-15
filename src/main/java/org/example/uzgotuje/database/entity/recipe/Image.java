@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity representing an image associated with a recipe.
+ */
 @Entity
 @Getter
 @Setter
@@ -25,6 +28,11 @@ public class Image {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
+    /**
+     * Constructs a new Image with the specified image path.
+     *
+     * @param imagePath the path where the image is stored on the server
+     */
     public Image(String imagePath) {
         this.imagePath = imagePath;
     }

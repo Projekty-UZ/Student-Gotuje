@@ -10,9 +10,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Configuration class for setting up CORS (Cross-Origin Resource Sharing) in the application.
+ */
 @Configuration
 public class CorsConfig {
 
+    /**
+     * Creates and configures a {@link CorsConfigurationSource} bean.
+     *
+     * @return a configured {@link CorsConfigurationSource} instance
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

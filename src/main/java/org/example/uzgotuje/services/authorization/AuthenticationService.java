@@ -32,15 +32,21 @@ public class AuthenticationService {
     private final PasswordEncoderConfig passwordEncoderConfig;
     private final EmailSender emailSender;
 
+    /**
+     * Registers a new user.
+     *
+     * @param request the registration request containing user details
+     * @return a RegistrationResponse containing the result of the registration
+     */
     public RegistrationResponse register(RegistrationRequest request) {
-        boolean isEmailValid=emailValidator.test(request.getEmail());
-        if(!isEmailValid){
+        boolean isEmailValid = emailValidator.test(request.getEmail());
+        if (!isEmailValid) {
             return new RegistrationResponse("Email is not valid", "");
         }
-        if(!request.getPassword().equals(request.getRepeatPassword())){
+        if (!request.getPassword().equals(request.getRepeatPassword())) {
             return new RegistrationResponse("passwords do not match", "");
         }
-        if(request.getUsername().isEmpty()){
+        if (request.getUsername().isEmpty()) {
             return new RegistrationResponse("username is empty", "");
         }
         RegistrationResponse response = userService.signUpUser(
@@ -55,27 +61,33 @@ public class AuthenticationService {
         String link = "http://89.77.30.155/api/auth/confirm?token=" + response.getToken();
         emailSender.send(
                 request.getEmail(),
-                buildEmail(request.getUsername()
-                ,"Confirm your email",
-                "Thank you for registering. Please click on the below link to activate your account:" ,
-                link
+                buildEmail(request.getUsername(),
+                        "Confirm your email",
+                        "Thank you for registering. Please click on the below link to activate your account:",
+                        link
                 ));
         return response;
     }
 
+    /**
+     * Confirms a token and activates the associated user account.
+     *
+     * @param token the token to be confirmed
+     * @return a TokenResponse containing the result of the confirmation
+     */
     @Transactional
     public TokenResponse confirmToken(String token) {
         Optional<ConfirmationToken> confirmationToken = confirmationTokenRepository.findByToken(token);
         if (confirmationToken.isEmpty()) {
             return new TokenResponse("Token not found");
         }
-        if(confirmationToken.get().getConfirmedAt() != null){
+        if (confirmationToken.get().getConfirmedAt() != null) {
             return new TokenResponse("Email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.get().getExpiresAt();
 
-        if(expiredAt.isBefore(LocalDateTime.now())){
+        if (expiredAt.isBefore(LocalDateTime.now())) {
             return new TokenResponse("Token expired");
         }
 
@@ -86,6 +98,13 @@ public class AuthenticationService {
         return new TokenResponse("Email confirmed");
     }
 
+    /**
+     * Logs in a user by validating their email and password.
+     *
+     * @param email the user's email
+     * @param password the user's password
+     * @return a cookie value if login is successful, otherwise "Invalid credentials"
+     */
     public String login(String email, String password) {
         Optional<User> userOpt = userService.getUserByEmail(email);
 
@@ -108,6 +127,12 @@ public class AuthenticationService {
         return "Invalid credentials";
     }
 
+    /**
+     * Validates a session cookie.
+     *
+     * @param cookieValue the value of the cookie to be validated
+     * @return true if the cookie is valid, otherwise false
+     */
     public boolean validateCookie(String cookieValue) {
         Optional<SessionCookie> userCookieOpt = sessionCookieRepository.findByCookieValue(cookieValue);
 
@@ -120,6 +145,12 @@ public class AuthenticationService {
         return false;
     }
 
+    /**
+     * Validates a session cookie and retrieves the associated user.
+     *
+     * @param cookieValue the value of the cookie to be validated
+     * @return the associated User if the cookie is valid, otherwise null
+     */
     public User validateCookieAndGetUser(String cookieValue) {
         Optional<SessionCookie> userCookieOpt = sessionCookieRepository.findByCookieValue(cookieValue);
 
@@ -134,11 +165,22 @@ public class AuthenticationService {
         return null;
     }
 
+    /**
+     * Logs out a user by deleting their session cookie.
+     *
+     * @param cookieValue the value of the cookie to be deleted
+     */
     public void logout(String cookieValue) {
         sessionCookieRepository.findByCookieValue(cookieValue)
                 .ifPresent(sessionCookieRepository::delete);
     }
 
+    /**
+     * Sends a password reset email to the user.
+     *
+     * @param email the user's email
+     * @return "Success" if the email was sent, otherwise "User not found"
+     */
     @Transactional
     public String resetPasswordEmail(String email) {
         Optional<User> userOpt = userService.getUserByEmail(email);
@@ -166,6 +208,14 @@ public class AuthenticationService {
         return "User not found";
     }
 
+    /**
+     * Resets a user's password using a token.
+     *
+     * @param token the token to be used for password reset
+     * @param password the new password
+     * @param repeatPassword the repeated new password
+     * @return "Success" if the password was reset, otherwise an error message
+     */
     public String resetPassword(String token, String password, String repeatPassword) {
         if (!password.equals(repeatPassword)) {
             return "Passwords do not match";
@@ -192,7 +242,16 @@ public class AuthenticationService {
         return "Token not found";
     }
 
-    private String buildEmail(String name, String use,String message, String link) {
+    /**
+     * Builds an email message.
+     *
+     * @param name the recipient's name
+     * @param use the email subject
+     * @param message the email message
+     * @param link the link to be included in the email
+     * @return the constructed email message
+     */
+    private String buildEmail(String name, String use, String message, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -248,7 +307,7 @@ public class AuthenticationService {
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> " + message + "</p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">"+link+"</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> " + message + "</p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">" + link + "</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +

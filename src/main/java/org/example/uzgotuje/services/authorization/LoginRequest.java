@@ -10,6 +10,13 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class LoginRequest {
+    /**
+     * The email of the user attempting to log in.
+     */
     private final String email;
+
+    /**
+     * The password of the user attempting to log in.
+     */
     private final String password;
 }

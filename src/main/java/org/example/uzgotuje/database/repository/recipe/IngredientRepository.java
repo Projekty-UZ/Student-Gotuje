@@ -5,7 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing Ingredient entities.
+ */
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
-    //find ingredient by name
+
+    /**
+     * Finds an Ingredient by its name.
+     *
+     * @param name the name of the Ingredient
+     * @return an Optional containing the found Ingredient, or empty if not found
+     */
     Optional<Ingredient> findByName(String name);
 }

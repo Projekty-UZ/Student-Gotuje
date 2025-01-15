@@ -10,6 +10,12 @@ import java.util.Set;
 
 public class RecipeSpecification {
 
+    /**
+     * Creates a specification to filter recipes by a set of tags.
+     *
+     * @param tags the set of tags to filter recipes by
+     * @return a specification to filter recipes by the given tags
+     */
     public static Specification<Recipe> hasTags(Set<Tag> tags) {
         return (root, query, criteriaBuilder) -> {
             if (tags == null || tags.isEmpty()) {
@@ -26,6 +32,12 @@ public class RecipeSpecification {
         };
     }
 
+    /**
+     * Creates a specification to filter recipes by name or ingredient name.
+     *
+     * @param name the name to filter recipes by
+     * @return a specification to filter recipes by the given name or ingredient name
+     */
     public static Specification<Recipe> hasName(String name) {
         return (root, query, criteriaBuilder) -> {
             if (name == null || name.isEmpty()) {
@@ -47,6 +59,12 @@ public class RecipeSpecification {
         };
     }
 
+    /**
+     * Creates a specification to filter recipes by type.
+     *
+     * @param type the type to filter recipes by
+     * @return a specification to filter recipes by the given type
+     */
     public static Specification<Recipe> hasType(RecipeTypes type) {
         return (root, query, criteriaBuilder) -> {
             if (type == null) {

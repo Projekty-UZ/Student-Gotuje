@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a session cookie used for user authentication.
+ */
 @Entity
 @Getter
 @Setter

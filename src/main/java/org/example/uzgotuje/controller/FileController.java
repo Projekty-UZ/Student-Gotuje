@@ -14,9 +14,18 @@ import jcifs.smb.SmbFileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * REST controller for handling file retrieval requests.
+ */
 @RestController
 public class FileController {
 
+    /**
+     * Retrieves a file from the Samba server.
+     *
+     * @param filename the name of the file to retrieve
+     * @return a response entity containing the file resource or an error status
+     */
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         try {
